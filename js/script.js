@@ -17,7 +17,7 @@ function fetchQuiz() {
         const questionOptionsContainer = document.createElement("ul");
         questionOptionsArray.forEach(option => {
           const choice = document.createElement("li");
-          choice.textContent = option;
+          choice.innerHTML = option;
           questionOptionsContainer.appendChild(choice);
         })
         
