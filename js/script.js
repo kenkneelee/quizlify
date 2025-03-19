@@ -1,32 +1,80 @@
 function fetchQuiz() {
-  fetch('https://opentdb.com/api.php?amount=10&category=23&difficulty=medium&type=multiple')
+  return fetch('https://opentdb.com/api.php?amount=10&category=23&difficulty=medium&type=multiple')
     .then(response => response.json())
     .then(data => {
-      console.log(data);
-      const results = data.results;
-      const questionList = document.createElement("ol");
-
-      results.forEach(result => {
-        console.log(result.question);
-        const questionItem = document.createElement("li");
-        const questionOptions = document.createElement("ul"); 
-        
-        const questionOptionsArray = result.incorrect_answers;
-        questionOptionsArray.push(result.correct_answer);
-        
-        const questionOptionsContainer = document.createElement("ul");
-        questionOptionsArray.forEach(option => {
-          const choice = document.createElement("li");
-          choice.innerHTML = option;
-          questionOptionsContainer.appendChild(choice);
-        })
-        
-        questionItem.textContent = result.question;
-        questionList.appendChild(questionItem);        
-        questionItem.appendChild(questionOptionsContainer);
-      });
-
-      document.getElementById("response").appendChild(questionList);
+      // parse out response code, keep array of results
+      console.log(data.results);
+      return data.results;
     })
     .catch(error => console.error(error));
 }
+
+function startQuiz() {
+  fetchQuiz().then(questions => {
+    console.log("Starting quiz with questions:", questions)
+    let currentQuestion = 0;
+    questions.forEach(question => {
+      // concat incorrect and correct answers
+      const answers = [...question.incorrect_answers, question.correct_answer];
+      // shuffle answers here vvv
+      
+      console.log(answers);
+      
+      // Form container
+      const questionForm = document.createElement("form");
+      // Question text      
+      const questionText = document.createElement("h2");
+      questionText.textContent = question.question;
+      questionForm.appendChild(questionText);
+      
+      // Radio buttons and labels
+      answers.forEach(answer => {
+        // Input buttons
+        const choiceInput = document.createElement("input");
+        choiceInput.type = "radio";
+        choiceInput.id = answer;
+        choiceInput.name = "choice"
+        choiceInput.value = answer;
+        
+        // Input Labels
+        const choiceLabel = document.createElement("label");
+        //
+        choiceLabel.for = answer;
+        choiceLabel.textContent = answer;
+        
+        questionForm.appendChild(choiceInput);
+        questionForm.appendChild(choiceLabel);
+      });
+      
+      document.getElementById("active").appendChild(questionForm);
+      
+      
+      console.log(question);
+    });
+  });
+}
+
+// Creates a bullet point list of results
+      // const questionList = document.createElement("ol");
+
+      // results.forEach(result => {
+      //   console.log(result.question);
+      //   const questionItem = document.createElement("li");
+      //   const questionOptions = document.createElement("ul"); 
+        
+      //   const questionOptionsArray = result.incorrect_answers;
+      //   questionOptionsArray.push(result.correct_answer);
+        
+      //   const questionOptionsContainer = document.createElement("ul");
+      //   questionOptionsArray.forEach(option => {
+      //     const choice = document.createElement("li");
+      //     choice.innerHTML = option;
+      //     questionOptionsContainer.appendChild(choice);
+      //   })
+        
+      //   questionItem.textContent = result.question;
+      //   questionList.appendChild(questionItem);        
+      //   questionItem.appendChild(questionOptionsContainer);
+      // });
+
+      // document.getElementById("active").appendChild(questionList);
