@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quizlify</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/script.js"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quizlify</title>
-  <script src="js/script.js"></script>
-</head>
+  <body>
+    <div>
+      <div class="logoContainer">
+        <img src="images/logo.png" id="logo" alt="quizlify logo" />
+        <button onclick="startQuiz()">Let's start</button>
+        <h3>Score:</h3>
+        <div id="score">0</div>
+      </div>
 
-<body>
-  <div>
-    <h1>Welcome to Quizlify</h1>
-    <button onclick="startQuiz()">Let's start</button>
-    <h3>Score:</h3>
-    <div id="score">0</div>
-    <div id="active"></div>
-  </div>
-</body>
 
+      <div id="active"></div>
+    </div>
+  </body>
 </html>
