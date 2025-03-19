@@ -11,13 +11,12 @@ function fetchQuiz() {
     .catch((error) => console.error(error));
 }
 
+// global variable, to change -> encapsulate in a game function
 let score = 0;
-
 function initializeScore() {
     score = 0;
   document.getElementById("score").textContent = score;
 }
-
 function incrementScore() {
   score++;
   document.getElementById("score").textContent = score;
@@ -32,8 +31,11 @@ function createForms(questions) {
     // Form container
     const questionForm = document.createElement("form");
     // Question text
-    const questionText = document.createElement("h2");
+    const questionTracker = document.createElement("h2");
+    questionTracker.innerHTML = "Question " + currentQuestion;
+    const questionText = document.createElement("h3");
     questionText.innerHTML = question.question;
+    questionForm.appendChild(questionTracker);
     questionForm.appendChild(questionText);
 
     // concat incorrect and correct answers
@@ -42,8 +44,12 @@ function createForms(questions) {
 
     console.log(answers);
     // Radio buttons and labels
+    const answerBox = document.createElement("div");
+    answerBox.classList.add("answerbox");
+    
     answers.forEach((answer) => {
       const answerContainer = document.createElement("div");
+      answerContainer.classList.add("answercontainer");
 
       // Input buttons
       const choiceInput = document.createElement("input");
@@ -61,8 +67,9 @@ function createForms(questions) {
 
       answerContainer.appendChild(choiceInput);
       answerContainer.appendChild(choiceLabel);
-      questionForm.appendChild(answerContainer);
+      answerBox.appendChild(answerContainer);
     });
+    questionForm.appendChild(answerBox);
 
     const submitQuestion = document.createElement("input");
     submitQuestion.type = "submit";
