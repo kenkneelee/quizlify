@@ -59,6 +59,22 @@ function createForms(questions) {
     // Logic after pressing button
     submitQuestion.addEventListener("click", function (event) {
       event.preventDefault();
+      const form = event.target.closest("form");
+      const selected = form.querySelector('input[type="radio"]:checked');
+      if (selected) {
+        console.log ("Selected: " + selected.value);
+        console.log ("Correct answer: " + question.correct_answer)
+        
+        if (selected.value == question.correct_answer) {
+            console.log ("Correct!");
+        } else {
+            console.log ("Incorrect!");
+        }
+        
+      } else {
+        console.log ("Please select an answer");
+      }
+      
       console.log("Next question clicked!");
     });
 
