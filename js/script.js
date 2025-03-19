@@ -11,6 +11,18 @@ function fetchQuiz() {
     .catch((error) => console.error(error));
 }
 
+let score = 0;
+
+function initializeScore() {
+    score = 0;
+  document.getElementById("score").textContent = score;
+}
+
+function incrementScore() {
+  score++;
+  document.getElementById("score").textContent = score;
+}
+
 function createForms(questions) {
   console.log("Making forms for questions", questions);
   let currentQuestion = 0;
@@ -62,19 +74,19 @@ function createForms(questions) {
       const form = event.target.closest("form");
       const selected = form.querySelector('input[type="radio"]:checked');
       if (selected) {
-        console.log ("Selected: " + selected.value);
-        console.log ("Correct answer: " + question.correct_answer)
-        
+        console.log("Selected: " + selected.value);
+        console.log("Correct answer: " + question.correct_answer);
+
         if (selected.value == question.correct_answer) {
-            console.log ("Correct!");
+          console.log("Correct!");
+          incrementScore();
         } else {
-            console.log ("Incorrect!");
+          console.log("Incorrect!");
         }
-        
       } else {
-        console.log ("Please select an answer");
+        console.log("Please select an answer");
       }
-      
+
       console.log("Next question clicked!");
     });
 
@@ -86,6 +98,7 @@ function createForms(questions) {
 }
 
 function startQuiz() {
+  initializeScore();
   fetchQuiz().then((questions) => {
     createForms(questions);
   });
