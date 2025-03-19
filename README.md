@@ -1,0 +1,1 @@
+A simple trivia game made using vanilla html, css, and js.
