@@ -2,26 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-
-.logoContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-#logo {
-  max-width: 500px;
-  border-radius: 25%;
-}
-
-button {
-  color: #f0f0f0;
-  padding: 1rem;
-  border-radius: 30px;
-  background: linear-gradient(135deg, #13547a 0%, #80d0c7 100%);
-  align-self: center;
+  /* border: 1px red solid; */
 }
 
 body {
@@ -33,7 +14,44 @@ body {
   align-items: center;
 }
 
+header {
+  width: 100%;
+  background-color: #ababab40;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+}
+
+.navButtons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navButton {
+  text-align: center;
+  width: 100%;
+}
+
+.navButton img {
+  width: 50px;
+}
+
+footer {
+  width: 100%;
+  background-color: #ababab40;
+  padding: 1rem;
+  text-align: center;
+}
+
 form {
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -41,7 +59,7 @@ form {
   background-color: #fff;
   border-radius: 15px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  padding: 25px;
+  padding: 2.5rem;
   transform: scale(0.95);
   transition: transform 0.8s ease, box-shadow 0.8s ease;
 }
@@ -49,6 +67,50 @@ form {
 form:hover {
   transform: scale(1);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.window {
+  background-color: #3c3c3c54;
+  width: 80%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.quiz {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2rem;
+}
+
+.logoContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+#logo {
+  width: 70%;
+}
+
+#startButton {
+  color: #f0f0f0;
+  padding: 1rem;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #13547a 0%, #80d0c7 100%);
+  align-self: center;
+}
+
+#active {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .answercontainer {
@@ -61,14 +123,15 @@ form:hover {
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 label:hover {
-  background-color: #7d7979;
+  background-color: #7d797960;
 }
-
+/* hide radio button */
 input[type="radio"] {
   display: none;
 }
+/* currently selected option label */
 input[type="radio"]:checked + label {
-  background-color: #7d7979;
+  background-color: #7d7979b1;
 }
 
 label {
