@@ -90,6 +90,8 @@ function createForms(questions) {
         } else {
           console.log("Incorrect!");
         }
+        
+        
       } else {
         console.log("Please select an answer");
       }
@@ -98,8 +100,12 @@ function createForms(questions) {
     });
 
     questionForm.appendChild(submitQuestion);
-
+    questionForm.style.display="none";
+    if (currentQuestion === 1) {
+      questionForm.style.display="flex";
+    }
     document.getElementById("active").appendChild(questionForm);
+    document.getElementById("active").style.display="flex";
     console.log(question);
   });
 }
