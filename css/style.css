@@ -71,6 +71,8 @@ form:hover {
 
 .window {
   background-color: #3c3c3c54;
+  /* backdrop-filter: blur(10px); */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   width: 80%;
   height: 100vh;
   display: flex;
@@ -98,12 +100,25 @@ form:hover {
   width: 70%;
 }
 
+#logo:hover {
+  width: 70%;
+  transform: scale(1.1);
+  transition: transform 0.8s ease, box-shadow 0.8s ease;
+}
+
 #startButton {
   color: #f0f0f0;
   padding: 1rem;
   border-radius: 5px;
   background: linear-gradient(135deg, #13547a 0%, #80d0c7 100%);
   align-self: center;
+}
+
+#scoreContainer {
+  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 #active {

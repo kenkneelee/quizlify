@@ -111,6 +111,8 @@ function createForms(questions) {
 }
 
 function startQuiz() {
+  document.getElementById("startButton").style.display = "none";
+  document.getElementById("scoreContainer").style.display = "flex";
   initializeScore();
   fetchQuiz().then((questions) => {
     createForms(questions);
