@@ -9,16 +9,36 @@
   </head>
 
   <body>
-    <div>
-      <div class="logoContainer">
-        <img src="images/logo.png" id="logo" alt="quizlify logo" />
-        <button onclick="startQuiz()">Let's start</button>
-        <h3>Score:</h3>
-        <div id="score">0</div>
+    <div class="window">
+      <header>
+        <div class="profile">
+          <h2><a href="https://kenlee.ca/">Kenny Lee</a></h2>
+          <h3>Full Stack Web Developer</h3>
+        </div>
+        <div class="navButtons">
+          <a class="navButton" href="https://github.com/kenkneelee">
+            <img src="/images/github-mark.svg" />
+          </a>
+          <a class="navButton" href="https://www.linkedin.com/in/kenny-lee-/">
+            <img src="/images/icons8-linkedin.svg" />
+          </a>
+        </div>
+      </header>
+
+      <div class="quiz">
+        <div class="logoContainer">
+          <img src="images/logo.png" id="logo" alt="quizlify logo" />
+          <button id="startButton" onclick="startQuiz()">Let's start</button>
+          <div class="scoreContainer">
+            <h3>Score:</h3>
+            <div id="score">0</div>
+          </div>
+        </div>
+
+        <div id="active" style="display: none"></div>
       </div>
 
-
-      <div id="active"></div>
+      <footer>Copyright © 2025 Kenny Lee</footer>
     </div>
   </body>
 </html>
