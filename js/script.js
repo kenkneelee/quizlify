@@ -23,7 +23,7 @@ class QuizGame {
   // Fetch quiz data
   fetchQuiz() {
     return fetch(
-      "https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple"
+      "https://opentdb.com/api.php?amount=10&difficulty=easy&type=multiple"
     )
       .then((response) => response.json())
       .then((data) => {
@@ -75,8 +75,20 @@ class QuizGame {
       this.forms[index + 1].style.display = "flex";
     }
     else {
-      console.log("No more questions");
+      this.closeGame();
     }
+  }
+
+  closeGame() {
+    console.log("game finished");
+    document.getElementById("active").style.display = "none";
+    document.getElementById("scoreContainer").style.display = "none";
+    const congrats = document.createElement("h2");
+    congrats.textContent = "Thanks for playing!" 
+    const finalScore = document.createElement("h3");
+    finalScore.textContent = "Your final score: " + this.score;
+    document.getElementsByClassName("logoContainer")[0].appendChild(congrats);
+    document.getElementsByClassName("logoContainer")[0].appendChild(finalScore);
   }
 
   createForms() {
