@@ -3,6 +3,7 @@ class QuizGame {
     this.score = 0;
     this.currentQuestion = 0;
     this.questions = [];
+    this.forms = [];
   }
 
   initializeScore() {
@@ -13,6 +14,7 @@ class QuizGame {
     this.score++;
     document.getElementById("score").textContent = this.score;
   }
+
   fetchQuiz() {
     return fetch(
       "https://opentdb.com/api.php?amount=10&category=23&difficulty=medium&type=multiple"
@@ -20,14 +22,13 @@ class QuizGame {
       .then((response) => response.json())
       .then((data) => {
         // parse out response code, keep array of results
-        console.log(data.results);
         this.questions = data.results;
         return this.questions;
       })
       .catch((error) => console.error(error));
   }
 
-  handleSubmit(event, question) {
+  handleSubmit(event, question, index) {
     const form = event.target.closest("form");
     const selected = form.querySelector('input[type="radio"]:checked');
     if (selected) {
@@ -40,8 +41,20 @@ class QuizGame {
       } else {
         console.log("Incorrect!");
       }
+      this.nextQuestion(index);
     } else {
       console.log("Please select an answer");
+    }
+
+  }
+
+  nextQuestion(index) {
+    if (index < this.forms.length - 1) {
+      this.forms[index].style.display = "none";
+      this.forms[index + 1].style.display = "flex";
+    }
+    else {
+      console.log("No more questions");
     }
   }
 
@@ -49,7 +62,6 @@ class QuizGame {
     console.log("Making forms for questions", this.questions);
     this.questions.forEach((question, index) => {
       const currentRender = index + 1;
-      console.log("Currently rendering question ", currentRender)
       // Form container
       const questionForm = document.createElement("form");
       // Question text
@@ -100,19 +112,18 @@ class QuizGame {
       // Logic after pressing button
       submitQuestion.addEventListener("click", (event) => {
         event.preventDefault();
-        this.handleSubmit(event, question);
-        console.log("Next question clicked!");
+        this.handleSubmit(event, question, index);
       });
 
       questionForm.appendChild(submitQuestion);
+      // Hide by default, and archive new form
       questionForm.style.display = "none";
-      if (currentRender - 1 === this.currentQuestion) {
-        questionForm.style.display = "flex";
-      }
+      this.forms.push(questionForm);
       document.getElementById("active").appendChild(questionForm);
-      document.getElementById("active").style.display = "flex";
-      console.log(question);
     })
+    // Display question 1
+    this.forms[0].style.display = "flex";
+    document.getElementById("active").style.display = "flex";
   }
 
 }
@@ -122,8 +133,7 @@ function startQuiz() {
   document.getElementById("scoreContainer").style.display = "flex";
   const game = new QuizGame();
   game.initializeScore();
-  game.fetchQuiz().then((questions) => {
-    console.log("Quiz data loaded", questions);
+  game.fetchQuiz().then(() => {
     game.createForms();
   });
 }
