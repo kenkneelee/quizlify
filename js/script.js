@@ -26,6 +26,25 @@ class QuizGame {
       })
       .catch((error) => console.error(error));
   }
+
+  handleSubmit(event, question) {
+    const form = event.target.closest("form");
+    const selected = form.querySelector('input[type="radio"]:checked');
+    if (selected) {
+      console.log("Selected: " + selected.value);
+      console.log("Correct answer: " + question.correct_answer);
+
+      if (selected.value === question.correct_answer) {
+        console.log("Correct!");
+        this.incrementScore();
+      } else {
+        console.log("Incorrect!");
+      }
+    } else {
+      console.log("Please select an answer");
+    }
+  }
+
   createForms() {
     console.log("Making forms for questions", this.questions);
     this.questions.forEach((question, index) => {
@@ -44,8 +63,7 @@ class QuizGame {
       // concat incorrect and correct answers
       const answers = [...question.incorrect_answers, question.correct_answer];
       // shuffle answers here vvv
-
-      console.log(answers);
+      // console.log(answers);
       // Radio buttons and labels
       const answerBox = document.createElement("div");
       answerBox.classList.add("answerbox");
@@ -82,25 +100,9 @@ class QuizGame {
       // Logic after pressing button
       submitQuestion.addEventListener("click", (event) => {
         event.preventDefault();
-        const form = event.target.closest("form");
-        const selected = form.querySelector('input[type="radio"]:checked');
-        if (selected) {
-          console.log("Selected: " + selected.value);
-          console.log("Correct answer: " + question.correct_answer);
-
-          if (selected.value === question.correct_answer) {
-            console.log("Correct!");
-            this.incrementScore();
-          } else {
-            console.log("Incorrect!");
-          }
-        } else {
-          console.log("Please select an answer");
-        }
-
+        this.handleSubmit(event, question);
         console.log("Next question clicked!");
       });
-
 
       questionForm.appendChild(submitQuestion);
       questionForm.style.display = "none";
