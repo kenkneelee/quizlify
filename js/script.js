@@ -23,7 +23,7 @@ class QuizGame {
   // Fetch quiz data
   fetchQuiz() {
     return fetch(
-      "https://opentdb.com/api.php?amount=10&category=23&difficulty=medium&type=multiple"
+      "https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple"
     )
       .then((response) => response.json())
       .then((data) => {
@@ -35,6 +35,16 @@ class QuizGame {
   }
 
   // Form interactions
+  //   Shuffle helper function for answers (Fisher-Yates / Knuth shuffle)
+  shuffle(array) {
+    let currentIndex = array.length;
+    while (currentIndex != 0) {
+      let randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+    return array;
+  }
   //   Submit button on each question form
   handleSubmit(event, question, index) {
     const form = event.target.closest("form");
@@ -95,8 +105,9 @@ class QuizGame {
 
       // concat incorrect and correct answers
       const answers = [...question.incorrect_answers, question.correct_answer];
-      // shuffle answers here vvv
-      // console.log(answers);
+      // shuffle answers
+      this.shuffle(answers);
+
       // Radio buttons and labels
       const answerBox = document.createElement("div");
       answerBox.classList.add("answerbox");
