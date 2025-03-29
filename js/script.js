@@ -1,4 +1,5 @@
 class QuizGame {
+  // Game Variables
   constructor() {
     this.score = 0;
     this.currentQuestion = 0;
@@ -6,15 +7,20 @@ class QuizGame {
     this.forms = [];
   }
 
+  // Score Tracking
   initializeScore() {
     this.score = 0;
-    document.getElementById("score").textContent = this.score;
+    this.updateScoreboard();
   }
   incrementScore() {
     this.score++;
+    this.updateScoreboard();
+  }
+  updateScoreboard() {
     document.getElementById("score").textContent = this.score;
   }
 
+  // Fetch quiz data
   fetchQuiz() {
     return fetch(
       "https://opentdb.com/api.php?amount=10&category=23&difficulty=medium&type=multiple"
@@ -28,6 +34,8 @@ class QuizGame {
       .catch((error) => console.error(error));
   }
 
+  // Form interactions
+  //   Submit button on each question form
   handleSubmit(event, question, index) {
     const form = event.target.closest("form");
     const selected = form.querySelector('input[type="radio"]:checked');
@@ -51,7 +59,6 @@ class QuizGame {
     }
 
   }
-
   nextQuestion(index) {
     if (index < this.forms.length - 1) {
       this.forms[index].style.display = "none";
@@ -68,12 +75,22 @@ class QuizGame {
       const currentRender = index + 1;
       // Form container
       const questionForm = document.createElement("form");
+      // Progress Tracker
+      const progressTracker = document.createElement("div");
+      progressTracker.classList.add("progressTracker");
+      const progressBar = document.createElement("div");
+      progressBar.style.width = ((currentRender / this.questions.length) * 100) + "%";
+      progressBar.classList.add("progressBar");
+      progressTracker.appendChild(progressBar);
       // Question text
       const questionTracker = document.createElement("h2");
       questionTracker.innerHTML = "Question " + currentRender;
       const questionText = document.createElement("h3");
       questionText.innerHTML = question.question;
+
       questionForm.appendChild(questionTracker);
+      questionForm.appendChild(progressTracker);
+
       questionForm.appendChild(questionText);
 
       // concat incorrect and correct answers
