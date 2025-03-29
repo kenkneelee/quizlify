@@ -37,11 +37,15 @@ class QuizGame {
 
       if (selected.value === question.correct_answer) {
         console.log("Correct!");
+        form.classList.add('formCorrect');
         this.incrementScore();
       } else {
+        form.classList.add('formIncorrect');
         console.log("Incorrect!");
       }
-      this.nextQuestion(index);
+      setTimeout(() => {
+        this.nextQuestion(index);
+      }, 1000)
     } else {
       console.log("Please select an answer");
     }

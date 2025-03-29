@@ -69,6 +69,38 @@ form:hover {
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
 }
 
+.formCorrect {
+  animation: fadeGreenAnimation 0.8s ease-in-out;
+}
+
+.formIncorrect {
+  animation: fadeRedAnimation 0.8s ease-in-out;
+}
+
+@keyframes fadeGreenAnimation {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: green;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+@keyframes fadeRedAnimation {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: red;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
 .window {
   background-color: #3c3c3c54;
   /* backdrop-filter: blur(10px); */
