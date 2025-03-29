@@ -26,7 +26,93 @@ class QuizGame {
       })
       .catch((error) => console.error(error));
   }
-  
+  createForms() {
+    console.log("Making forms for questions", this.questions);
+    this.questions.forEach((question, index) => {
+      const currentRender = index + 1;
+      console.log("Currently rendering question ", currentRender)
+      // Form container
+      const questionForm = document.createElement("form");
+      // Question text
+      const questionTracker = document.createElement("h2");
+      questionTracker.innerHTML = "Question " + currentRender;
+      const questionText = document.createElement("h3");
+      questionText.innerHTML = question.question;
+      questionForm.appendChild(questionTracker);
+      questionForm.appendChild(questionText);
+
+      // concat incorrect and correct answers
+      const answers = [...question.incorrect_answers, question.correct_answer];
+      // shuffle answers here vvv
+
+      console.log(answers);
+      // Radio buttons and labels
+      const answerBox = document.createElement("div");
+      answerBox.classList.add("answerbox");
+
+      answers.forEach((answer) => {
+        const answerContainer = document.createElement("div");
+        answerContainer.classList.add("answercontainer");
+
+        // Input buttons
+        const choiceInput = document.createElement("input");
+        choiceInput.type = "radio";
+        choiceInput.id = "q" + currentRender + " " + answer;
+        choiceInput.name = "choice" + currentRender;
+        choiceInput.value = answer;
+        choiceInput.required = "required";
+
+        // Input Labels
+        const choiceLabel = document.createElement("label");
+        //
+        choiceLabel.htmlFor = "q" + currentRender + " " + answer;
+        choiceLabel.innerHTML = answer;
+
+        answerContainer.appendChild(choiceInput);
+        answerContainer.appendChild(choiceLabel);
+        answerBox.appendChild(answerContainer);
+      });
+      questionForm.appendChild(answerBox);
+
+      const submitQuestion = document.createElement("input");
+      submitQuestion.type = "submit";
+      submitQuestion.value = "Next question";
+
+
+      // Logic after pressing button
+      submitQuestion.addEventListener("click", (event) => {
+        event.preventDefault();
+        const form = event.target.closest("form");
+        const selected = form.querySelector('input[type="radio"]:checked');
+        if (selected) {
+          console.log("Selected: " + selected.value);
+          console.log("Correct answer: " + question.correct_answer);
+
+          if (selected.value === question.correct_answer) {
+            console.log("Correct!");
+            this.incrementScore();
+          } else {
+            console.log("Incorrect!");
+          }
+        } else {
+          console.log("Please select an answer");
+        }
+
+        console.log("Next question clicked!");
+      });
+
+
+      questionForm.appendChild(submitQuestion);
+      questionForm.style.display = "none";
+      if (currentRender - 1 === this.currentQuestion) {
+        questionForm.style.display = "flex";
+      }
+      document.getElementById("active").appendChild(questionForm);
+      document.getElementById("active").style.display = "flex";
+      console.log(question);
+    })
+  }
+
 }
 
 function startQuiz() {
@@ -36,107 +122,7 @@ function startQuiz() {
   game.initializeScore();
   game.fetchQuiz().then((questions) => {
     console.log("Quiz data loaded", questions);
+    game.createForms();
   });
 }
-
-
-// global variable, to change -> encapsulate in a game function
-
-
-// function createForms(questions) {
-//   console.log("Making forms for questions", questions);
-//   let currentQuestion = 0;
-//   questions.forEach((question, index) => {
-//     currentQuestion = index + 1;
-//     console.log("Current question: " + currentQuestion);
-//     // Form container
-//     const questionForm = document.createElement("form");
-//     // Question text
-//     const questionTracker = document.createElement("h2");
-//     questionTracker.innerHTML = "Question " + currentQuestion;
-//     const questionText = document.createElement("h3");
-//     questionText.innerHTML = question.question;
-//     questionForm.appendChild(questionTracker);
-//     questionForm.appendChild(questionText);
-
-//     // concat incorrect and correct answers
-//     const answers = [...question.incorrect_answers, question.correct_answer];
-//     // shuffle answers here vvv
-
-//     console.log(answers);
-//     // Radio buttons and labels
-//     const answerBox = document.createElement("div");
-//     answerBox.classList.add("answerbox");
-
-//     answers.forEach((answer) => {
-//       const answerContainer = document.createElement("div");
-//       answerContainer.classList.add("answercontainer");
-
-//       // Input buttons
-//       const choiceInput = document.createElement("input");
-//       choiceInput.type = "radio";
-//       choiceInput.id = "q" + currentQuestion + " " + answer;
-//       choiceInput.name = "choice" + currentQuestion;
-//       choiceInput.value = answer;
-//       choiceInput.required = "required";
-
-//       // Input Labels
-//       const choiceLabel = document.createElement("label");
-//       //
-//       choiceLabel.htmlFor = "q" + currentQuestion + " " + answer;
-//       choiceLabel.innerHTML = answer;
-
-//       answerContainer.appendChild(choiceInput);
-//       answerContainer.appendChild(choiceLabel);
-//       answerBox.appendChild(answerContainer);
-//     });
-//     questionForm.appendChild(answerBox);
-
-//     const submitQuestion = document.createElement("input");
-//     submitQuestion.type = "submit";
-//     submitQuestion.value = "Next question";
-
-//     // Logic after pressing button
-//     submitQuestion.addEventListener("click", function(event) {
-//       event.preventDefault();
-//       const form = event.target.closest("form");
-//       const selected = form.querySelector('input[type="radio"]:checked');
-//       if (selected) {
-//         console.log("Selected: " + selected.value);
-//         console.log("Correct answer: " + question.correct_answer);
-
-//         if (selected.value == question.correct_answer) {
-//           console.log("Correct!");
-//           incrementScore();
-//         } else {
-//           console.log("Incorrect!");
-//         }
-
-
-//       } else {
-//         console.log("Please select an answer");
-//       }
-
-//       console.log("Next question clicked!");
-//     });
-
-//     questionForm.appendChild(submitQuestion);
-//     questionForm.style.display = "none";
-//     if (currentQuestion === 1) {
-//       questionForm.style.display = "flex";
-//     }
-//     document.getElementById("active").appendChild(questionForm);
-//     document.getElementById("active").style.display = "flex";
-//     console.log(question);
-//   });
-// }
-
-// function startQuiz() {
-//   document.getElementById("startButton").style.display = "none";
-//   document.getElementById("scoreContainer").style.display = "flex";
-//   initializeScore();
-//   fetchQuiz().then((questions) => {
-//     createForms(questions);
-//   });
-// }
 
