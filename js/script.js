@@ -81,14 +81,31 @@ class QuizGame {
 
   closeGame() {
     console.log("game finished");
-    document.getElementById("active").style.display = "none";
+    this.forms[this.forms.length - 1].style.display = "none";
+
+    const congratsPage = document.createElement("div");
+    congratsPage.classList.add("congrats");
+    const congratsMessage = document.createElement("h2");
+    const congratsScore = document.createElement("h3");
+    const congratsScoreCounter = document.createElement("div");
+    const congratsPlayAgain = document.createElement("button");
+    congratsPlayAgain.classList.add("playAgain");
+
+
+    congratsPage.appendChild(congratsMessage);
+    congratsPage.appendChild(congratsScore);
+    congratsPage.appendChild(congratsScoreCounter);
+    congratsPage.appendChild(congratsPlayAgain);
+
+    congratsMessage.textContent = "Thanks for playing!";
+    congratsScore.textContent = "Your final score: ";
+    congratsScoreCounter.textContent = this.score;
+    congratsPlayAgain.textContent = "Play again?";
+
+    document.getElementById("active").appendChild(congratsPage);
+
     document.getElementById("scoreContainer").style.display = "none";
-    const congrats = document.createElement("h2");
-    congrats.textContent = "Thanks for playing!" 
-    const finalScore = document.createElement("h3");
-    finalScore.textContent = "Your final score: " + this.score;
-    document.getElementsByClassName("logoContainer")[0].appendChild(congrats);
-    document.getElementsByClassName("logoContainer")[0].appendChild(finalScore);
+
   }
 
   createForms() {
