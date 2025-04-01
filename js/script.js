@@ -24,7 +24,7 @@ class QuizGame {
   // Fetch and process quiz data into forms
   fetchQuiz() {
     return fetch(
-      "https://opentdb.com/api.php?amount=10&difficulty=easy&type=multiple"
+      "https://opentdb.com/api.php?amount=3&difficulty=easy&type=multiple"
     )
       .then((response) => response.json())
       .then((data) => {
@@ -175,6 +175,11 @@ class QuizGame {
     congratsPlayAgain.classList.add("playAgain");
     congratsPlayAgain.addEventListener("click", () => this.playAgain());
 
+    const congratsCarousel = new Carousel();
+    congratsCarousel.fetchImages().then(() => {
+      congratsCarousel.createCarousel();
+    })
+
 
     congratsPage.appendChild(congratsMessage);
     congratsPage.appendChild(congratsScore);
@@ -203,6 +208,47 @@ class QuizGame {
 
   deleteCongrats() {
     document.querySelector(".congrats").remove();
+  }
+}
+
+class Carousel {
+  constructor() {
+    this.images = [];
+  }
+  fetchImages() {
+    return fetch(
+      "https://api.thecatapi.com/v1/images/search?limit=10"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        this.images = data;
+        return this.images;
+      })
+      .catch((error) => console.error(error));
+  }
+  createCarousel() {
+    const carouselTarget = document.getElementsByClassName("congrats")[0];
+    const carouselContainer = document.createElement("div");
+    carouselContainer.classList.add("carousel");
+
+    const buttonLeft = document.createElement("button");
+    const buttonRight = document.createElement("button");
+
+    const carouselSlides = document.createElement("ul");
+
+    carouselContainer.appendChild(buttonLeft);
+    this.images.forEach((image) => {
+      const carouselSlide = document.createElement("li");
+      const carouselImage = document.createElement("img");
+      carouselImage.src = image.url;
+      carouselSlide.appendChild(carouselImage);
+      carouselSlides.appendChild(carouselSlide);
+    })
+
+    carouselContainer.appendChild(carouselSlides);
+    carouselContainer.appendChild(buttonRight);
+
+    carouselTarget.appendChild(carouselContainer);
   }
 }
 
