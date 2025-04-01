@@ -35,7 +35,6 @@ class QuizGame {
       .catch((error) => console.error(error));
   }
   createForms() {
-    console.log("Making forms for questions", this.questions);
     this.questions.forEach((question, index) => {
       const currentRender = index + 1;
       // Form container
@@ -161,9 +160,12 @@ class QuizGame {
   }
 
   closeGame() {
-    console.log("game finished");
     this.forms[this.forms.length - 1].style.display = "none";
+    this.createCongrats();
+    document.getElementById("scoreContainer").style.display = "none";
+  }
 
+  createCongrats() {
     const congratsPage = document.createElement("div");
     congratsPage.classList.add("congrats");
     const congratsMessage = document.createElement("h2");
@@ -185,13 +187,9 @@ class QuizGame {
     congratsPlayAgain.textContent = "Play again?";
 
     document.getElementById("active").appendChild(congratsPage);
-
-    document.getElementById("scoreContainer").style.display = "none";
-
   }
 
   playAgain() {
-    console.log("Play again clicked");
     currentInstance = null;
     this.deleteForms();
     this.deleteCongrats();
@@ -199,8 +197,6 @@ class QuizGame {
   }
 
   deleteForms() {
-    console.log("Deleting old forms");
-    console.log(document.getElementById("active"))
     this.forms.forEach(form => form.remove());
     this.forms = [];
   }
