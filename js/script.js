@@ -1,3 +1,4 @@
+let currentInstance = null;
 class QuizGame {
   // Game Variables
   constructor() {
@@ -20,7 +21,7 @@ class QuizGame {
     document.getElementById("score").textContent = this.score;
   }
 
-  // Fetch quiz data
+  // Fetch and process quiz data into forms
   fetchQuiz() {
     return fetch(
       "https://opentdb.com/api.php?amount=10&difficulty=easy&type=multiple"
@@ -33,81 +34,6 @@ class QuizGame {
       })
       .catch((error) => console.error(error));
   }
-
-  // Form interactions
-  //   Shuffle helper function for answers (Fisher-Yates / Knuth shuffle)
-  shuffle(array) {
-    let currentIndex = array.length;
-    while (currentIndex != 0) {
-      let randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-      [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-    }
-    return array;
-  }
-  //   Submit button on each question form
-  handleSubmit(event, question, index) {
-    const form = event.target.closest("form");
-    const selected = form.querySelector('input[type="radio"]:checked');
-    if (selected) {
-      console.log("Selected: " + selected.value);
-      console.log("Correct answer: " + question.correct_answer);
-
-      if (selected.value === question.correct_answer) {
-        console.log("Correct!");
-        form.classList.add('formCorrect');
-        this.incrementScore();
-      } else {
-        form.classList.add('formIncorrect');
-        console.log("Incorrect!");
-      }
-      setTimeout(() => {
-        this.nextQuestion(index);
-      }, 1000)
-    } else {
-      console.log("Please select an answer");
-    }
-
-  }
-  nextQuestion(index) {
-    if (index < this.forms.length - 1) {
-      this.forms[index].style.display = "none";
-      this.forms[index + 1].style.display = "flex";
-    }
-    else {
-      this.closeGame();
-    }
-  }
-
-  closeGame() {
-    console.log("game finished");
-    this.forms[this.forms.length - 1].style.display = "none";
-
-    const congratsPage = document.createElement("div");
-    congratsPage.classList.add("congrats");
-    const congratsMessage = document.createElement("h2");
-    const congratsScore = document.createElement("h3");
-    const congratsScoreCounter = document.createElement("div");
-    const congratsPlayAgain = document.createElement("button");
-    congratsPlayAgain.classList.add("playAgain");
-
-
-    congratsPage.appendChild(congratsMessage);
-    congratsPage.appendChild(congratsScore);
-    congratsPage.appendChild(congratsScoreCounter);
-    congratsPage.appendChild(congratsPlayAgain);
-
-    congratsMessage.textContent = "Thanks for playing!";
-    congratsScore.textContent = "Your final score: ";
-    congratsScoreCounter.textContent = this.score;
-    congratsPlayAgain.textContent = "Play again?";
-
-    document.getElementById("active").appendChild(congratsPage);
-
-    document.getElementById("scoreContainer").style.display = "none";
-
-  }
-
   createForms() {
     console.log("Making forms for questions", this.questions);
     this.questions.forEach((question, index) => {
@@ -182,20 +108,115 @@ class QuizGame {
       this.forms.push(questionForm);
       document.getElementById("active").appendChild(questionForm);
     })
-    // Display question 1
+    // Display question 1 to start
     this.forms[0].style.display = "flex";
     document.getElementById("active").style.display = "flex";
   }
 
+  // Form interactions
+  //   Shuffle helper function for answers (Fisher-Yates / Knuth shuffle)
+  shuffle(array) {
+    let currentIndex = array.length;
+    while (currentIndex != 0) {
+      let randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+    return array;
+  }
+  //   Submit button on each question form
+  handleSubmit(event, question, index) {
+    const form = event.target.closest("form");
+    const selected = form.querySelector('input[type="radio"]:checked');
+    if (selected) {
+      console.log("Selected: " + selected.value);
+      console.log("Correct answer: " + question.correct_answer);
+      // Evaluate answer
+      if (selected.value === question.correct_answer) {
+        console.log("Correct!");
+        form.classList.add('formCorrect');
+        this.incrementScore();
+      } else {
+        form.classList.add('formIncorrect');
+        console.log("Incorrect!");
+      }
+      // Timeout for correct/incorrect animation to run
+      setTimeout(() => {
+        this.nextQuestion(index);
+      }, 1000)
+    } else {
+      // Todo: visual feedback for no answer selected
+      console.log("Please select an answer");
+    }
+  }
+
+  nextQuestion(index) {
+    if (index < this.forms.length - 1) {
+      this.forms[index].style.display = "none";
+      this.forms[index + 1].style.display = "flex";
+    }
+    else {
+      this.closeGame();
+    }
+  }
+
+  closeGame() {
+    console.log("game finished");
+    this.forms[this.forms.length - 1].style.display = "none";
+
+    const congratsPage = document.createElement("div");
+    congratsPage.classList.add("congrats");
+    const congratsMessage = document.createElement("h2");
+    const congratsScore = document.createElement("h3");
+    const congratsScoreCounter = document.createElement("div");
+    const congratsPlayAgain = document.createElement("button");
+    congratsPlayAgain.classList.add("playAgain");
+    congratsPlayAgain.addEventListener("click", () => this.playAgain());
+
+
+    congratsPage.appendChild(congratsMessage);
+    congratsPage.appendChild(congratsScore);
+    congratsPage.appendChild(congratsScoreCounter);
+    congratsPage.appendChild(congratsPlayAgain);
+
+    congratsMessage.textContent = "Thanks for playing!";
+    congratsScore.textContent = "Your final score: ";
+    congratsScoreCounter.textContent = Math.round((this.score / this.forms.length) * 100) + "%";
+    congratsPlayAgain.textContent = "Play again?";
+
+    document.getElementById("active").appendChild(congratsPage);
+
+    document.getElementById("scoreContainer").style.display = "none";
+
+  }
+
+  playAgain() {
+    console.log("Play again clicked");
+    currentInstance = null;
+    this.deleteForms();
+    this.deleteCongrats();
+    startQuiz();
+  }
+
+  deleteForms() {
+    console.log("Deleting old forms");
+    console.log(document.getElementById("active"))
+    this.forms.forEach(form => form.remove());
+    this.forms = [];
+  }
+
+  deleteCongrats() {
+    document.querySelector(".congrats").remove();
+  }
 }
 
 function startQuiz() {
   document.getElementById("startButton").style.display = "none";
   document.getElementById("scoreContainer").style.display = "flex";
-  const game = new QuizGame();
-  game.initializeScore();
-  game.fetchQuiz().then(() => {
-    game.createForms();
+  currentInstance = new QuizGame();
+  currentInstance.initializeScore();
+  currentInstance.fetchQuiz().then(() => {
+    currentInstance.createForms();
   });
 }
 
