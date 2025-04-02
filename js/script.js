@@ -178,13 +178,12 @@ class QuizGame {
     const congratsCarousel = new Carousel();
     congratsCarousel.fetchImages().then(() => {
       congratsCarousel.createCarousel();
+      congratsPage.appendChild(congratsPlayAgain);
     })
-
 
     congratsPage.appendChild(congratsMessage);
     congratsPage.appendChild(congratsScore);
     congratsPage.appendChild(congratsScoreCounter);
-    congratsPage.appendChild(congratsPlayAgain);
 
     congratsMessage.textContent = "Thanks for playing!";
     congratsScore.textContent = "Your final score: ";
@@ -233,16 +232,47 @@ class Carousel {
 
     const buttonLeft = document.createElement("button");
     const buttonRight = document.createElement("button");
+    buttonLeft.classList.add("carouselButton");
+    buttonRight.classList.add("carouselButton");
+
+    buttonLeft.textContent = "Prev";
+    buttonRight.textContent = "Next";
 
     const carouselSlides = document.createElement("ul");
+    carouselSlides.classList.add("carouselSlides");
 
     carouselContainer.appendChild(buttonLeft);
     this.images.forEach((image) => {
       const carouselSlide = document.createElement("li");
+      carouselSlide.classList.add("carouselSlide");
       const carouselImage = document.createElement("img");
+      carouselImage.classList.add("carouselImage");
       carouselImage.src = image.url;
       carouselSlide.appendChild(carouselImage);
       carouselSlides.appendChild(carouselSlide);
+    })
+
+    buttonLeft.addEventListener("click", () => {
+      buttonLeft.disabled = true;
+      buttonRight.disabled = true;
+
+      const slideWidth = document.querySelector(".carouselSlide").clientWidth;
+      carouselSlides.scrollLeft -= slideWidth;
+      setTimeout(() => {
+        buttonLeft.disabled = false;
+        buttonRight.disabled = false;
+      }, 500)
+    })
+
+    buttonRight.addEventListener("click", () => {
+      buttonLeft.disabled = true;
+      buttonRight.disabled = true;
+      const slideWidth = document.querySelector(".carouselSlide").clientWidth;
+      carouselSlides.scrollLeft += slideWidth;
+      setTimeout(() => {
+        buttonLeft.disabled = false;
+        buttonRight.disabled = false;
+      }, 500)
     })
 
     carouselContainer.appendChild(carouselSlides);
