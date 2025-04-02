@@ -171,23 +171,27 @@ class QuizGame {
     const congratsMessage = document.createElement("h2");
     const congratsScore = document.createElement("h3");
     const congratsScoreCounter = document.createElement("div");
+    const congratsRewardText = document.createElement ("div");
     const congratsPlayAgain = document.createElement("button");
     congratsPlayAgain.classList.add("playAgain");
     congratsPlayAgain.addEventListener("click", () => this.playAgain());
 
+    congratsPage.appendChild(congratsMessage);
+    congratsPage.appendChild(congratsScore);
+    congratsPage.appendChild(congratsScoreCounter);
+    congratsPage.appendChild(congratsRewardText);
+    
     const congratsCarousel = new Carousel();
     congratsCarousel.fetchImages().then(() => {
       congratsCarousel.createCarousel();
       congratsPage.appendChild(congratsPlayAgain);
     })
 
-    congratsPage.appendChild(congratsMessage);
-    congratsPage.appendChild(congratsScore);
-    congratsPage.appendChild(congratsScoreCounter);
 
     congratsMessage.textContent = "Thanks for playing!";
     congratsScore.textContent = "Your final score: ";
     congratsScoreCounter.textContent = Math.round((this.score / this.forms.length) * 100) + "%";
+    congratsRewardText.textContent = "Your reward:";
     congratsPlayAgain.textContent = "Play again?";
 
     document.getElementById("active").appendChild(congratsPage);
@@ -235,8 +239,8 @@ class Carousel {
     buttonLeft.classList.add("carouselButton");
     buttonRight.classList.add("carouselButton");
 
-    buttonLeft.textContent = "Prev";
-    buttonRight.textContent = "Next";
+    buttonLeft.innerHTML = "&#8249;";
+    buttonRight.innerHTML = "&#8250;";
 
     const carouselSlides = document.createElement("ul");
     carouselSlides.classList.add("carouselSlides");
