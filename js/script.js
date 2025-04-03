@@ -136,14 +136,28 @@ class QuizGame {
     const submitSetup = document.createElement("input");
     submitSetup.type = "submit";
     submitSetup.value = "Let's get started!"
-    
+    submitSetup.addEventListener("click", (event) => {
+      event.preventDefault();
+      const selectedDifficulty = document.querySelector('input[name="Difficulty"]:checked')?.value;
+      const selectedCategory = categorySelect.value;
+      const selectedNumber = document.querySelector('input[name="Number"]:checked')?.value;
+
+      if (!selectedDifficulty || !selectedCategory || !selectedNumber) {
+        console.log("form incomplete");
+        setupForm.classList.add("formIncorrect");
+        setTimeout(() => { setupForm.classList.remove("formIncorrect") }, 1000)
+      }
+
+      console.log(selectedDifficulty, selectedCategory, selectedNumber);
+    })
+
     setupForm.appendChild(setupHeader);
     setupForm.appendChild(setupDifficultyContainer);
     setupForm.appendChild(setupCategoryContainer);
     setupForm.appendChild(setupNumberContainer);
     setupForm.appendChild(submitSetup);
-    
-    
+
+
     document.getElementById("active").appendChild(setupForm);
     document.getElementById("active").style.display = "flex";
   }
