@@ -21,6 +21,134 @@ class QuizGame {
     document.getElementById("score").textContent = this.score;
   }
 
+  quizSetup() {
+    const difficulties = ["Easy", "Medium", "Hard"];
+    const categories = [
+      "Any",
+      "General Knowledge",
+      "Entertainment: Books",
+      "Entertainment: Film",
+      "Entertainment: Music",
+      "Entertainment: Musicals & Theatres",
+      "Entertainment: Television",
+      "Entertainment: Video Games",
+      "Entertainment: Board Games",
+      "Science & Nature",
+      "Science: Computers",
+      "Science: Mathematics",
+      "Mythology",
+      "Sports",
+      "Geography",
+      "History",
+      "Politics",
+      "Art",
+      "Celebrities",
+      "Animals",
+      "Vehicles",
+      "Entertainment: Comics",
+      "Science: Gadgets",
+      "Entertainment: Japanese Anime & Manga",
+      "Entertainment: Cartoon & Animations"
+    ];
+
+    const numberOptions = [3, 5, 10, 20];
+
+    const setupForm = document.createElement("form");
+    const setupHeader = document.createElement("h2");
+    setupHeader.textContent = "Game Setup";
+
+    // Setup Difficulty //
+    const setupDifficultyContainer = document.createElement("div");
+    setupDifficultyContainer.classList.add("setupContainer")
+    const setupDifficultyHeader = document.createElement("h3");
+    setupDifficultyHeader.textContent = "Difficulty"
+    setupDifficultyContainer.appendChild(setupDifficultyHeader);
+    // 3 Buttons (Easy, med hard)
+    const difficultyChoicesContainer = document.createElement("div");
+    difficultyChoicesContainer.classList.add("setupChoiceContainer");
+    difficulties.forEach((difficulty) => {
+      const difficultyButton = document.createElement("input");
+      difficultyButton.type = "radio";
+      difficultyButton.id = difficulty + "Difficulty";
+      difficultyButton.name = "Difficulty";
+      difficultyButton.value = difficulty;
+      difficultyButton.required = "required";
+      difficultyChoicesContainer.appendChild(difficultyButton);
+
+      const difficultyLabel = document.createElement("label");
+      difficultyLabel.classList.add("setupChoice");
+      difficultyLabel.htmlFor = difficulty + "Difficulty";
+      difficultyLabel.innerHTML = difficulty;
+      difficultyChoicesContainer.appendChild(difficultyLabel);
+    })
+    setupDifficultyContainer.appendChild(difficultyChoicesContainer);
+    //
+
+    // Setup Category //
+    const setupCategoryContainer = document.createElement("div");
+    setupCategoryContainer.classList.add("setupContainer");
+    const setupCategoryHeader = document.createElement("h3");
+    setupCategoryHeader.textContent = "Category"
+    setupCategoryContainer.appendChild(setupCategoryHeader);
+    // Dropdown
+    // Label for accessibility
+    const categoryLabel = document.createElement("label");
+    categoryLabel.innerHTML = "Choose a category"
+    categoryLabel.htmlFor = "Category";
+    categoryLabel.style.display = "none";
+    const categorySelect = document.createElement("select");
+    categories.forEach((category) => {
+      const categoryOption = document.createElement("option");
+      categoryOption.value = category;
+      categoryOption.innerHTML = category;
+      categorySelect.appendChild(categoryOption);
+    })
+    setupCategoryContainer.appendChild(categoryLabel);
+    setupCategoryContainer.appendChild(categorySelect);
+    //
+
+    // Setup Number of Questions //
+    const setupNumberContainer = document.createElement("div");
+    const setupNumberHeader = document.createElement("h3");
+    setupNumberHeader.textContent = "How many questions?";
+    setupNumberContainer.appendChild(setupNumberHeader);
+    // 4 option buttons
+    const numberChoicesContainer = document.createElement("div");
+    numberChoicesContainer.classList.add("setupChoiceContainer");
+    numberOptions.forEach((numberOption) => {
+      const numberButton = document.createElement("input");
+      numberButton.type = "radio";
+      numberButton.id = numberOption + "number";
+      numberButton.name = "Number";
+      numberButton.value = numberOption;
+      numberButton.required = "required";
+      numberChoicesContainer.appendChild(numberButton);
+
+      const numberLabel = document.createElement("label");
+      numberLabel.classList.add("setupChoice");
+      numberLabel.htmlFor = numberOption + "number";
+      numberLabel.innerHTML = numberOption;
+      numberChoicesContainer.appendChild(numberLabel);
+    })
+    setupNumberContainer.appendChild(numberChoicesContainer);
+    //
+
+    const submitSetup = document.createElement("input");
+    submitSetup.type = "submit";
+    submitSetup.value = "Let's get started!"
+    
+    setupForm.appendChild(setupHeader);
+    setupForm.appendChild(setupDifficultyContainer);
+    setupForm.appendChild(setupCategoryContainer);
+    setupForm.appendChild(setupNumberContainer);
+    setupForm.appendChild(submitSetup);
+    
+    
+    document.getElementById("active").appendChild(setupForm);
+    document.getElementById("active").style.display = "flex";
+  }
+
+
   // Fetch and process quiz data into forms
   fetchQuiz() {
     return fetch(
@@ -171,7 +299,7 @@ class QuizGame {
     const congratsMessage = document.createElement("h2");
     const congratsScore = document.createElement("h3");
     const congratsScoreCounter = document.createElement("div");
-    const congratsRewardText = document.createElement ("div");
+    const congratsRewardText = document.createElement("div");
     const congratsPlayAgain = document.createElement("button");
     congratsPlayAgain.classList.add("playAgain");
     congratsPlayAgain.addEventListener("click", () => this.playAgain());
@@ -180,7 +308,7 @@ class QuizGame {
     congratsPage.appendChild(congratsScore);
     congratsPage.appendChild(congratsScoreCounter);
     congratsPage.appendChild(congratsRewardText);
-    
+
     const congratsCarousel = new Carousel();
     congratsCarousel.fetchImages().then(() => {
       congratsCarousel.createCarousel();
@@ -289,10 +417,13 @@ class Carousel {
 function startQuiz() {
   document.getElementById("startButton").style.display = "none";
   document.getElementById("scoreContainer").style.display = "flex";
+
   currentInstance = new QuizGame();
-  currentInstance.initializeScore();
-  currentInstance.fetchQuiz().then(() => {
-    currentInstance.createForms();
-  });
+  currentInstance.quizSetup();
+
+  // currentInstance.fetchQuiz().then(() => {
+  //   currentInstance.initializeScore();
+  //   currentInstance.createForms();
+  // });
 }
 
