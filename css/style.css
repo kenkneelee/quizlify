@@ -120,7 +120,7 @@ a {
   align-items: center;
   justify-content: space-between;
   color: #f2f2f2; /* Soft white */
-  font-family: 'Seven Segment', sans-serif;
+  font-family: "Seven Segment", sans-serif;
   background-color: #00000030;
   padding: 2rem;
   border-radius: 2rem;
@@ -133,6 +133,19 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.setupContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.setupChoiceContainer {
+  display: flex;
+}
+
+.setupChoice {
+  border: 1px solid black;
 }
 
 /* form created for each question */
@@ -279,7 +292,6 @@ input[type="submit"] {
   width: 50px;
   opacity: 50%;
   position: relative;
-  
 }
 
 .carouselSlides {
